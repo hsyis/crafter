@@ -26,7 +26,7 @@ class Env(BaseClass):
 
   def __init__(
       self, area=(64, 64), view=(9, 9), size=(64, 64),
-      reward=True, length=10000, seed=None):
+      reward=True, length=10000, seed=None, fixed_map=False):
     view = np.array(view if hasattr(view, '__len__') else (view, view))
     size = np.array(size if hasattr(size, '__len__') else (size, size))
     seed = np.random.randint(0, 2**31 - 1) if seed is None else seed
@@ -36,6 +36,7 @@ class Env(BaseClass):
     self._reward = reward
     self._length = length
     self._seed = seed
+    self._fixed_map = fixed_map
     self._episode = 0
     self._world = engine.World(area, constants.materials, (12, 12))
     self._textures = engine.Textures(constants.root / 'assets')
@@ -71,7 +72,11 @@ class Env(BaseClass):
     center = (self._world.area[0] // 2, self._world.area[1] // 2)
     self._episode += 1
     self._step = 0
-    self._world.reset(seed=hash((self._seed, self._episode)) % (2 ** 31 - 1))
+    if _fixed_map:
+        world_seed = hash((self._seed, 1)) % (2 ** 31 - 1)
+    else:
+        world_seed = hash((self._seed, self._episode)) % (2 ** 31 - 1)
+    self._world.reset(seed=world_seed)
     self._update_time()
     self._player = objects.Player(self._world, center)
     self._last_health = self._player.health
