@@ -72,7 +72,7 @@ class Env(BaseClass):
     center = (self._world.area[0] // 2, self._world.area[1] // 2)
     self._episode += 1
     self._step = 0
-    if _fixed_map:
+    if self._fixed_map:
         world_seed = hash((self._seed, 1)) % (2 ** 31 - 1)
     else:
         world_seed = hash((self._seed, self._episode)) % (2 ** 31 - 1)
