@@ -26,6 +26,7 @@ def main():
   parser.add_argument('--wait', type=boolean, default=False)
   parser.add_argument('--death', type=str, default='reset', choices=[
       'continue', 'reset', 'quit'])
+  parser.add_argument('--fixed_map', type=boolean, default=False)
   args = parser.parse_args()
 
   keymap = {
@@ -60,7 +61,8 @@ def main():
   size[1] = size[1] or args.window[1]
 
   env = crafter.Env(
-      area=args.area, view=args.view, length=args.length, seed=args.seed)
+      area=args.area, view=args.view, length=args.length, seed=args.seed,
+      fixed_map=args.fixed_map)
   env = crafter.Recorder(env, args.record)
   env.reset()
   achievements = set()
