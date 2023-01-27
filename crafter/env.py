@@ -85,7 +85,7 @@ class Env(BaseClass):
     self._unlocked = set()
     worldgen.generate_world(self._world, self._player)
     if self._player_pos is not None:
-        self._player.pos = np.array(self._player_pos)
+        self._world.move(self._player, self._player_pos)
     return self._obs()
 
   def step(self, action):
