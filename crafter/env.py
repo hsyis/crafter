@@ -79,12 +79,13 @@ class Env(BaseClass):
         world_seed = hash((self._seed, self._episode)) % (2 ** 31 - 1)
     self._world.reset(seed=world_seed)
     self._update_time()
-    init_pos = center if self._player_pos is None else self._player_pos
-    self._player = objects.Player(self._world, init_pos)
+    self._player = objects.Player(self._world, center)
     self._last_health = self._player.health
     self._world.add(self._player)
     self._unlocked = set()
     worldgen.generate_world(self._world, self._player)
+    if self._player_pos is not None:
+        self._player.pos = np.array(self._player_pos)
     return self._obs()
 
   def step(self, action):
